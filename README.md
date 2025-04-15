@@ -55,12 +55,14 @@ pip install -r requirements.txt
 
 # Running the Experiments
 The experiments compare the performance of several classification models to predict autonomy levels based on user-rated dimensions.
+On Windows, `train_all_models.bat` is available.
+
 
 ## XGBoost Experiment
 Run the XGBoost experiment with grid search:
 
 ```bash
-python experiments/xgboost_experiment.py
+python Xgboost.py
 ```
 
 
@@ -68,21 +70,21 @@ python experiments/xgboost_experiment.py
 Run the Random Forest experiment:
 
 ```bash
-python experiments/random_forest_experiment.py
+python RandomForest.py
 ```
 
 ## SVM Experiment
 Run the SVM experiment:
 
 ```bash
-python experiments/svm_experiment.py
+python SVM.py
 ```
 
 ## CatBoost Experiment
 Run the CatBoost experiment:
 
 ```bash
-python experiments/catboost_experiment.py
+python Catboost.py
 ```
 
 
@@ -90,7 +92,7 @@ python experiments/catboost_experiment.py
 Run the TabPFN experiment:
 
 ```bash
-python experiments/tabpfn_experiment.py
+python TabPFN.py
 ```
 
 
