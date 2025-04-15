@@ -53,10 +53,10 @@ pip install -r requirements.txt
 ```
 
 
-#Running the Experiments
+# Running the Experiments
 The experiments compare the performance of several classification models to predict autonomy levels based on user-rated dimensions.
 
-##XGBoost Experiment
+## XGBoost Experiment
 Run the XGBoost experiment with grid search:
 
 ```bash
@@ -64,21 +64,21 @@ python experiments/xgboost_experiment.py
 ```
 
 
-##Random Forest Experiment
+## Random Forest Experiment
 Run the Random Forest experiment:
 
 ```bash
 python experiments/random_forest_experiment.py
 ```
 
-##SVM Experiment
+## SVM Experiment
 Run the SVM experiment:
 
 ```bash
 python experiments/svm_experiment.py
 ```
 
-##CatBoost Experiment
+## CatBoost Experiment
 Run the CatBoost experiment:
 
 ```bash
@@ -86,21 +86,24 @@ python experiments/catboost_experiment.py
 ```
 
 
-##TabPFN Experiment (with Feature Selection)
+## TabPFN Experiment (with Feature Selection)
 Run the TabPFN experiment:
 
 ```bash
 python experiments/tabpfn_experiment.py
-Each script uses a 70/30 train-test split and performs 5-fold cross-validation with GridSearchCV (where applicable), printing out the best parameters and detailed classification reports.
 ```
 
 
+Each script uses a 70/30 train-test split and performs 5-fold cross-validation with GridSearchCV (where applicable), printing out the best parameters and detailed classification reports.
 
-#Citation
+
+
+
+# Citation
 If you use this work in your research, please cite the paper as follows:
 
-#License
+# License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-#Contact
+# Contact
 For further inquiries or feedback, please contact:
