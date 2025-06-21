@@ -1,12 +1,13 @@
 import pandas as pd
+from pathlib import Path
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.multiclass import OneVsRestClassifier
 
 
-file_path = '../CSV/Survey_Restructured.csv'
-df = pd.read_csv(file_path)
+csv_path = Path(__file__).resolve().parent.parent / "CSV" / "Survey_Restructured.csv"
+df = pd.read_csv(csv_path)
 
 
 # extract Levels and Features
