@@ -1,4 +1,4 @@
-scikit-learn>=1.7.0
+scikit-learn>=1.6.1
 tabpfn>=2.0.9
 pandas>=2.3.0
 xgboost>=3.0.2
