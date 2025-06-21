@@ -1,6 +1,7 @@
 import warnings
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -9,8 +10,8 @@ from tabpfn import TabPFNClassifier
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-file_path = '../CSV/Survey_Restructured.csv'
-df = pd.read_csv(file_path)
+csv_path = Path(__file__).resolve().parent.parent / "CSV" / "Survey_Restructured.csv"
+df = pd.read_csv(csv_path)
 
 
 # extract Levels and Features

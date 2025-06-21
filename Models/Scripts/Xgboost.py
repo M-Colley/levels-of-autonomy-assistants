@@ -1,14 +1,15 @@
 import warnings
 import pandas as pd
 import xgboost as xgb
+from pathlib import Path
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.multioutput import MultiOutputClassifier
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-file_path = '../CSV/Survey_Restructured.csv'
-df = pd.read_csv(file_path)
+csv_path = Path(__file__).resolve().parent.parent / "CSV" / "Survey_Restructured.csv"
+df = pd.read_csv(csv_path)
 
 # extract Levels and Features
 levels = [f"Level_{i}" for i in range(1,6)]
