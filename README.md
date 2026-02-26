@@ -27,12 +27,12 @@ regarding levels of autonomy. It includes the experimental code for machine lear
 Ensure you have the following installed:
 
 - **Python 3.12+**
-- **Pandas ≥ 2.2.3**
-- **NumPy ≥ 2.2.4**
-- **scikit-learn ≥ 1.6.1**
-- **XGBoost ≥ 3.0.0**
-- **CatBoost ≥ 1.2.8**
-- **TabPFN ≥ 2.0.8**
+- **Pandas ≥ 2.3.3**
+- **NumPy ≥ 2.4.2**
+- **scikit-learn ≥ 1.8.0**
+- **XGBoost ≥ 3.2.0**
+- **CatBoost ≥ 1.2.10**
+- **TabPFN ≥ 6.4.1**
 
 
 ---
