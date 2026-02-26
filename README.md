@@ -281,3 +281,44 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 # Contact
 For further inquiries or feedback, please contact:
+
+## Additional Trainable Models Added
+
+To broaden baselines and improve robustness comparisons, the repository now also includes:
+
+- **LightGBM** (`Models/Scripts/LightGBM.py`): fast gradient boosting with good performance on tabular data.
+- **Extra Trees** (`Models/Scripts/ExtraTrees.py`): high-variance bagged randomized trees, often competitive with RF/XGBoost.
+- **Logistic Regression (One-vs-Rest)** (`Models/Scripts/LogisticRegression.py`): interpretable linear baseline for multi-label classification.
+
+These are integrated with the same scoring loop used by existing scripts (`f1_samples`, `f1_macro`, `average_precision`) to keep comparisons consistent.
+
+## Automated Testing Pipeline
+
+A GitHub Actions workflow has been added at `.github/workflows/automated-testing.yml`.
+
+It runs on:
+- **Python 3.13**
+- **Python 3.14**
+
+Pipeline stages:
+1. Checkout repository.
+2. Set up Python runtime.
+3. Install dependencies from `requirements.txt`.
+4. Execute `pytest` smoke tests.
+
+## Source Code Audit and Improvement Proposals
+
+After reviewing all current training scripts, the most impactful next improvements are:
+
+1. **Refactor duplicated data-loading and split logic** into a shared utility (single source of truth for column names, split seed, and CSV path).
+2. **Externalize hyperparameter grids** to config files (YAML/TOML) for easier reproducibility and faster experiment iteration.
+3. **Add deterministic evaluation reports** persisted to disk (`results/<model>/<scoring>.json`) instead of console-only output.
+4. **Introduce lightweight benchmark mode** (small grids) for rapid CI validation and full-grid mode for research runs.
+5. **Add calibration and threshold tuning per label** (especially useful for imbalanced multi-label outputs).
+6. **Track experiment metadata** (package versions, timestamp, git commit) to ensure full reproducibility across runs.
+7. **Add model explainability artifacts** (SHAP for tree models, coefficient summaries for linear models).
+8. **Add stratification-aware multi-label splitting** if class combinations are highly imbalanced.
+
+## Dependency Policy
+
+Dependencies were updated to current latest available stable releases at the time of this update and expanded to include LightGBM and pytest for CI smoke testing.

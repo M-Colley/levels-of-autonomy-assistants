@@ -17,6 +17,34 @@ if %errorlevel% neq 0 (
     goto error
 )
 
+
+echo =====================================
+echo Running ExtraTrees.py
+echo =====================================
+python ExtraTrees.py
+if %errorlevel% neq 0 (
+    echo "ExtraTrees.py encountered an error."
+    goto error
+)
+
+echo =====================================
+echo Running LightGBM.py
+echo =====================================
+python LightGBM.py
+if %errorlevel% neq 0 (
+    echo "LightGBM.py encountered an error."
+    goto error
+)
+
+echo =====================================
+echo Running LogisticRegression.py
+echo =====================================
+python LogisticRegression.py
+if %errorlevel% neq 0 (
+    echo "LogisticRegression.py encountered an error."
+    goto error
+)
+
 echo =====================================
 echo Running SVM.py
 echo =====================================
