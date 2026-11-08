@@ -172,3 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Generated experiment outputs
+Models/reproduction/results/
+catboost_info/
