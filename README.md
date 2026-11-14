@@ -26,13 +26,25 @@ regarding levels of autonomy. It includes the experimental code for machine lear
 
 Ensure you have the following installed:
 
-- **Python 3.12+**
-- **Pandas ≥ 2.3.3**
-- **NumPy ≥ 2.4.2**
+- **Python 3.13+** (CI tests Python 3.13 and 3.14)
+- **pandas ≥ 3.1.0**
+- **NumPy ≥ 2.5.4**
 - **scikit-learn ≥ 1.8.0**
-- **XGBoost ≥ 3.2.0**
+- **XGBoost ≥ 3.4.1**
 - **CatBoost ≥ 1.2.10**
-- **TabPFN ≥ 6.4.1**
+- **LightGBM ≥ 4.7.0**
+- **TabPFN ≥ 9.2.0**
+- **pytest ≥ 9.2.0** (for the tests)
+
+All of these are installed by `pip install -r requirements.txt`. The experiments were last run with Python 3.13.12,
+scikit-learn 1.9.1, pandas 3.1.1, NumPy 2.5.4, XGBoost 3.4.1, CatBoost 1.2.10, LightGBM 4.7.0, TabPFN 9.2.0 and
+PyTorch 2.15.0.
+
+**TabPFN weights:** TabPFN ≥ 9 uses the TabPFN v3.5 weights by default. Downloading them requires a one-time PriorLabs
+sign-in and licence acceptance, or a `TABPFN_TOKEN` environment variable with your PriorLabs API key. The TabPFN v2
+weights download without sign-in; `Models/reproduction/rerun_tabpfn.py v2` selects them explicitly. On a CPU, TabPFN
+refuses more than 1,000 training samples unless `TABPFN_ALLOW_CPU_LARGE_DATASET=1` is set, so a CUDA build of PyTorch
+is recommended.
 
 
 ---
@@ -321,4 +333,5 @@ After reviewing all current training scripts, the most impactful next improvemen
 
 ## Dependency Policy
 
-Dependencies were updated to current latest available stable releases at the time of this update and expanded to include LightGBM and pytest for CI smoke testing.
+Dependencies were last updated in November 2026 to the latest stable releases on PyPI (XGBoost is pinned to ≥ 3.4.1,
+the newest release available) and include LightGBM and pytest for CI smoke testing.
