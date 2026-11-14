@@ -14,6 +14,7 @@ regarding levels of autonomy. It includes the experimental code for machine lear
 - [Installation](#installation)
 - [Data Preparation](#data-preparation)
 - [Running the Experiments](#running-the-experiments)
+- [Re-running and Re-evaluating the Experiments](#re-running-and-re-evaluating-the-experiments)
 - [Hyperparameter Tuning](#hyperparameter-tuning)  
 - [Citation](#citation)
 - [License](#license)
@@ -110,6 +111,92 @@ python TabPFN.py
 
 
 Each script uses a 70/30 train-test split and performs 5-fold cross-validation with GridSearchCV (where applicable), printing out the best parameters and detailed classification reports.
+
+
+## Re-running and Re-evaluating the Experiments
+
+`Models/reproduction/` re-runs the experiments above with the current package versions and adds a re-evaluation.
+The grid searches use the same data, column order, 70/30 split (`random_state=42`), hyperparameter grids, 5-fold CV and
+seeds as `Models/Scripts/`. Two things differ, and neither changes which configuration is selected:
+
+- Each grid is evaluated once with all three scorings (`f1_samples`, `f1_macro`, `average_precision`) instead of three
+  separate runs, and the best configuration per scoring is refit on the training split.
+- Candidates run in parallel on all but one CPU thread, with each model single-threaded.
+
+For Logistic Regression the output is identical to the unmodified `Models/Scripts/LogisticRegression.py`.
+
+Run the scripts from `Models/reproduction/`, in this order:
+
+```bash
+cd Models/reproduction
+python rerun_original.py            # all grid searches; or name models, e.g. python rerun_original.py catboost svm
+python rerun_tabpfn.py v2           # TabPFN with the v2 weights (v2.5, v2.6, v3 or v3.5 also accepted)
+python analysis.py                  # baselines, confidence intervals, grouped CV; add --reuse to skip finished models
+python lofo_ci.py                   # leave-one-function-out confidence intervals
+```
+
+| Script | What it does |
+|---|---|
+| `rerun_original.py` | Grid searches for `logistic_regression`, `svm`, `extra_trees`, `lightgbm`, `random_forest`, `catboost`, `xgboost`; stores the selected configuration, test-set report, predictions and all CV scores. |
+| `rerun_tabpfn.py` | TabPFN with an explicit weights version (default `v2`), including the permutation-importance feature selection of `TabPFN.py`. Note that this selection uses the test set. |
+| `analysis.py` | Trivial baselines on the same test split (predict every level, random, function identity only), macro ROC-AUC and average precision, coherence of the predicted level sets, participant-clustered bootstrap CIs, generalisation to unseen participants (`GroupKFold` on `ID`) and unseen functions (leave-one-function-out on `Action`), variance decomposition, mean FCD rating per level, CatBoost permutation importance on the test set, and TabPFN with per-level tuned thresholds (`TunedThresholdClassifierCV`). |
+| `lofo_ci.py` | Out-of-fold predictions for each held-out function and bootstrap CIs of the difference to the "predict every level" baseline. |
+| `interval_model.py` | `IntervalClassifier`: predicts one contiguous range of levels instead of deciding each level independently, so predictions are never empty and have no gaps. Used by `analysis.py`. |
+| `common.py` | Shared paths, column names, split settings and feature names. |
+| `tabpfn_login.py` | One-time PriorLabs sign-in for the TabPFN v3.5 weights. Run it in an interactive terminal; it works around the TabPFN 9.2 login helper crashing on Windows. |
+
+All outputs go to `Models/reproduction/results/`, which is git-ignored:
+
+- `<model>/<scoring>.json`: the selected configuration, CV score, test-set classification report and package versions.
+- `<model>/<scoring>_test_outputs.npz`: test-set predictions and per-level scores.
+- `<model>/cv_results.csv.gz`: the CV scores of every configuration in the grid.
+- `tabpfn_<version>/baseline.json` and `feature_selection.json`, each with a matching `_test_outputs.npz`.
+- `analysis_summary.md` and `analysis_summary.json`: the re-evaluation.
+- `lofo_ci.json`: the leave-one-function-out confidence intervals.
+
+`analysis.py` adds comparison columns when a file `Models/reproduction/reference_results.json` exists, in the form
+`{"results": {"<model>": [[P, R, F1] for levels 0-4, then macro avg, then weighted avg]}}`.
+
+**Run times** (28 CPU threads shared with another CPU-heavy job, RTX 5080 GPU):
+
+| Grid | Logistic Regression | Extra Trees | Random Forest | LightGBM | CatBoost | SVM | XGBoost | TabPFN v2 | TabPFN v3.5 |
+|---|---|---|---|---|---|---|---|---|---|
+| Time | 4 s | 20 min | 31 min | 44 min | 46 min | 2.2 h | 3.3 h | 12 s | 106 s |
+
+SVM is slow because its poly-kernel fits with `C=100` converge slowly on unscaled features.
+
+**Column codebook** of `Models/CSV/Survey_Restructured.csv`:
+
+- `Level_1` … `Level_5`: autonomy levels 0 … 4 (1 = selected).
+- `Feature_1` … `Feature_12`, rated from 1 (strongly disagree) to 5 (strongly agree):
+  1. Safety risk
+  2. Increased safety
+  3. Relevance
+  4. Magicality
+  5. Privacy
+  6. Trust
+  7. Time consumption
+  8. Repetitiveness
+  9. Situational context
+  10. Social risk
+  11. Urgency
+  12. Complexity
+- `ID`: participant.
+- `Action`: function 1 … 14, in this order:
+  1. Adjust seat positioning
+  2. Adjust in-vehicle temperature
+  3. Send a text message
+  4. Start a phone call
+  5. Navigation control
+  6. Change driving mode
+  7. Select parking space
+  8. Overtake vehicle ahead
+  9. Start driving
+  10. Provide weather update
+  11. Adapt ambient light
+  12. Change song
+  13. Provide traffic news
+  14. Start a movie
 
 
 ## Hyperparameter Tuning

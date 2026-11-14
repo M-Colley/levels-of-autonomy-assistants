@@ -15,7 +15,8 @@ Reads the outputs of rerun_original.py / rerun_tabpfn.py and adds
 Hyper-parameters are the f1_macro-selected ones from the 70 % training split; for the
 grouped CV they are therefore fixed, not re-tuned (slightly optimistic for the models).
 
-Usage: python analysis.py
+Usage: python analysis.py [--reuse]
+       --reuse: keep the grouped-CV results of models already in results/analysis_summary.json
 """
 
 from __future__ import annotations
